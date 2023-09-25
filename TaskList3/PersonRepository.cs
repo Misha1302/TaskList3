@@ -1,7 +1,6 @@
 ﻿namespace TaskList3;
 
-using TaskList2;
-using TaskList2.Controllers;
+using TaskList3.Controllers;
 
 public class PersonRepository : IPersonRepository, IDisposable
 {

@@ -1,6 +1,6 @@
-﻿namespace TaskList2;
+﻿namespace TaskList3;
 
-using TaskList2.Controllers;
+using TaskList3.Controllers;
 
 public interface IPersonRepository
 {

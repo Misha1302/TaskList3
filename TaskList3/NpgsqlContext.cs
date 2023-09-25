@@ -1,7 +1,7 @@
 namespace TaskList3;
 
 using Microsoft.EntityFrameworkCore;
-using TaskList2.Controllers;
+using TaskList3.Controllers;
 
 public class NpgsqlContext : DbContext
 {
