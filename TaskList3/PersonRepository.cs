@@ -17,13 +17,13 @@ public class PersonRepository : IPersonRepository, IDisposable
         _context.Dispose();
     }
 
-    public void Delete(int id)
+    public void Delete(string id)
     {
         _context.Persons.Remove(_context.Persons.Find(id) ?? throw new InvalidOperationException());
         _context.SaveChanges();
     }
 
-    public Person? Get(int id) => _context.Persons.Find(id);
+    public Person? Get(string id) => _context.Persons.Find(id);
 
     public void Create(Person person)
     {

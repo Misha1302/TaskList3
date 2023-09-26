@@ -5,7 +5,7 @@ using TaskList3.Controllers;
 public interface IPersonRepository
 {
     void Create(Person person);
-    void Delete(int id);
-    Person? Get(int id);
+    void Delete(string id);
+    Person? Get(string id);
     void Update(Person person);
 }

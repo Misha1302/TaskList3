@@ -1,6 +1,14 @@
 namespace TaskList3.Controllers;
 
-public sealed record Person(string Name, string Email, string Password, int Id = 0)
+using Microsoft.EntityFrameworkCore;
+
+[PrimaryKey(nameof(Id))]
+public sealed record Person(string Name, string Email, string Password)
 {
-    public int Id { get; init; } = Id == default ? Email.GetHashOfString() : Id;
+    public string Id
+    {
+        get => this.CreateToken().ToStrToken();
+        // ReSharper disable once ValueParameterNotUsed
+        set { }
+    }
 }
