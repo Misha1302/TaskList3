@@ -1,7 +1,5 @@
 ﻿namespace TaskList3.Controllers;
 
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -16,16 +14,20 @@ public class MainController : ControllerBase
     }
 
     [HttpPost]
-    public IResult Login(string token)
-    {
-        if (token.FromStrToken(out _, out var password, out _) == null) 
-            return Results.Unauthorized();
-        
-        var person = _personRepository.Get(token);
-
-        return person?.Password != password
+    public IResult Login(string token) =>
+        CanLogin(token, out var p)
             ? Results.Unauthorized()
-            : CreateResult(person);
+            : CreateResult(p!);
+
+    private bool CanLogin(string token, out Person? person)
+    {
+        person = null;
+        if (token.TokenToPerson(out _, out _, out _) == null)
+            return false;
+
+        person = _personRepository.Get(token);
+
+        return person != null;
     }
 
     [HttpPost]
@@ -33,7 +35,8 @@ public class MainController : ControllerBase
     {
         var person = _personRepository.Get(p.Id);
 
-        if (person is not null) return Results.Problem();
+        if (person is not null)
+            return Results.Problem();
 
         _personRepository.Create(p);
 
@@ -51,17 +54,10 @@ public class MainController : ControllerBase
     [HttpPost]
     public IResult CreateTask(string token, RTask task)
     {
-        var t = DecomposeToken(token);
-        if (t == null)
+        if (!CanLogin(token, out _))
             return Results.Unauthorized();
 
-        var value = t.Claims.First(x => x.Type == ClaimTypes.Name).Value;
-        if (_personRepository.Get(value) != null)
-        {
-        }
 
         return null;
     }
-
-    private static JwtSecurityToken? DecomposeToken(string token) => new JwtSecurityTokenHandler().ReadJwtToken(token);
 }
