@@ -11,6 +11,7 @@ public class NpgsqlContext : DbContext
     }
 
     public DbSet<Person> Persons { get; set; } = null!;
+    public DbSet<RTask> Tasks { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

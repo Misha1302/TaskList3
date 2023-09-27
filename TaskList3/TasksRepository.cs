@@ -1,0 +1,39 @@
+﻿namespace TaskList3;
+
+using TaskList3.Controllers;
+
+public class TasksRepository : IPersonRepository, IDisposable
+{
+    private readonly NpgsqlContext _context;
+
+    public TasksRepository(NpgsqlContext context)
+    {
+        _context = context;
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        _context.Dispose();
+    }
+
+    public void Delete(string id)
+    {
+        _context.Persons.Remove(_context.Persons.Find(id) ?? throw new InvalidOperationException());
+        _context.SaveChanges();
+    }
+
+    public Person? Get(string id) => _context.Persons.Find(id);
+
+    public void Create(Person person)
+    {
+        _context.Persons.Add(person);
+        _context.SaveChanges();
+    }
+
+    public void Update(Person person)
+    {
+        _context.Persons.Update(Get(person.Id) ?? throw new InvalidOperationException());
+        _context.SaveChanges();
+    }
+}

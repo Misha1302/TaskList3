@@ -57,7 +57,6 @@ public class MainController : ControllerBase
         if (!CanLogin(token, out _))
             return Results.Unauthorized();
 
-
         return null;
     }
 }
